@@ -21,8 +21,11 @@ app = FastAPI(title=settings.app_name, lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origins,
-    allow_credentials=True,
+    # No cookie/session auth anywhere in this app, so a wildcard origin is
+    # safe here — this is a personal tool, not a multi-tenant service with
+    # anything sensitive to protect behind CORS.
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )

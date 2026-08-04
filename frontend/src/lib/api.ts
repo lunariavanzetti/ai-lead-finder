@@ -10,7 +10,11 @@ import type {
   SearchRequest,
 } from './types'
 
-const BASE_URL = '/api'
+// In local dev, Vite proxies "/api" to the backend (see vite.config.ts), so a
+// relative path works. In production the frontend and backend are separate
+// deployments (e.g. Vercel + Railway), so VITE_API_BASE_URL must point at the
+// deployed backend's origin — set it in the frontend's hosting environment.
+const BASE_URL = `${import.meta.env.VITE_API_BASE_URL ?? ''}/api`
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE_URL}${path}`, {
